@@ -8,13 +8,13 @@ public class Annotator {
 	private Csv.InputFile inputCsv;
 	private Csv.InputFile annotatedCsv;
 	private Csv.OutputFile outputCsv;
-	
+
 	private Object[] chromosomes;
-	
+
 	public Annotator(int numChromosomes) {
 		this.numChromosomes = numChromosomes;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void annotate (String inputPairsFile, String annotationsFile, String outputFile) throws IOException {
 		inputCsv = new Csv.InputFile(inputPairsFile);
@@ -25,13 +25,13 @@ public class Annotator {
 		for(int i=0; i<numChromosomes; i++) {
 			chromosomes[i] = new RedBlackIntervalBST<Integer, Interval>();
 		}
-		
+
 		//1. Read input file into an array for RedBlackIntervalBST
 		Chromosome c = null;
 		try {
 			do {
 				c = inputCsv.readLine();
-				if (c==null) break;
+				if (c==null) break ;
 				//The key for insertion is start
 				((RedBlackIntervalBST<Integer, Interval>)chromosomes[c.id.intValue()-1]).put(
 						c.interval.start, c.interval);
@@ -41,8 +41,8 @@ public class Annotator {
 		} finally {
 			inputCsv.close();
 		}
-		
-		//2. Read annotations and insert in the interval trees such that Start ² StartÕ ² End or StartÕ ² Start ² EndÕ.
+
+		//2. Read annotations and insert in the interval trees such that Start ï¿½ Startï¿½ ï¿½ End or Startï¿½ ï¿½ Start ï¿½ Endï¿½.
 		AnnotatedChromosome ac = null;
 		try {
 			do {
@@ -56,7 +56,7 @@ public class Annotator {
 		} finally {
 			annotatedCsv.close();
 		}
-		
+
 		//3. Do an inorder traversal of the trees for each chromosome and print out the annotations
 		try {
 			for (int i=0; i<numChromosomes; i++) {
@@ -66,13 +66,13 @@ public class Annotator {
 			outputCsv.close();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		if (args.length < 3) {
 			System.out.println("Need three arguments");
 			return;
 		}
-		
+
 		int numChromosomes = 22;
 		Annotator a = new Annotator(numChromosomes);
 		try {
@@ -80,6 +80,6 @@ public class Annotator {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 		
+		}
 	}
 }
